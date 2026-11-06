@@ -1,0 +1,34 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>Проверка вида от первого лица</title><style>body{font:16px system-ui;background:#f4f3ed;color:#243c35;padding:24px}button{padding:12px}iframe{width:100%;height:650px;border:0}pre{white-space:pre-wrap}</style><h1>Проверка вида от первого лица</h1><p>Проверка выполняет два заброса и отпускает рыбу. Расход: две наживки, без покупки и изменения денег.</p><button id="run">Проверить игровой цикл</button><pre id="result" role="status">Ожидание запуска</pre><iframe src="/" title="Игра"></iframe><script>
+const frame=document.querySelector('iframe'), result=document.querySelector('#result');
+document.querySelector('#run').onclick=async()=>{
+ const win=frame.contentWindow, E=s=>win.eval(s), lines=[];
+ const check=(ok,text)=>{if(!ok)throw Error(text);lines.push('OK: '+text);result.textContent=lines.join('\n');};
+ // Проверка логики использует те же обработчики, что кнопка; реальный клик проверяется отдельно.
+ const press=()=>E('down()');
+ const release=()=>E('up()');
+ const step=n=>E(`for(let i=0;i<${n};i++)update(1/60);`);
+ try{
+  check(E('S==="idle" && F.length>0'),'Игра загружена');
+  E('sb.value=BL.find(b=>Q[b.code]>=2).code');
+  check(E('waterPoint(500)[1]<waterPoint(30)[1]'),'Дальний заброс проецируется ближе к горизонту');
+  const tips=E('rodTip()');press();step(45);
+  check(E('S==="charge"&&pw>0.4&&rodTip()[1]<'+tips[1]),'Удержание отводит удочку назад: '+E('JSON.stringify({S,pw,tip:rodTip()})'));
+  release();step(49);check(E('S==="wait"'),'Заброс переходит в ожидание');
+  press();check(E('S==="idle"&&!sl.disabled'),'Сматывание возвращает управление');
+  press();step(30);release();step(49);
+  for(let i=0;i<2400&&E('S==="wait"');i++)step(1);
+  check(E('S==="bite"'),'Поплавок реагирует на поклёвку');press();
+  check(E('S==="reel"'),'Подсечка запускает вываживание');
+  const far=E('waterPoint(bx*d)[1]');
+  for(let i=0;i<20000&&E('S==="reel"');i++){
+   E('hold=t<.48?1:0');step(1);
+  }
+  check(E('S==="res"&&waterPoint(bx*Math.max(0,d))[1]>'+far),'Рыба приближается к камере и появляется карточка улова');
+  await E('finish(false)');
+  step(60);
+  check(E('S==="idle"'),'Отпускание рыбы завершает игровой цикл');
+  for(const loc of E('Object.keys(L)')){E('sl.value='+JSON.stringify(loc)+';draw()');check(E('landscapeKey===sl.value'),'Отрисовка локации '+loc);}
+  result.textContent=lines.join('\n')+'\nПРОВЕРКА ПРОЙДЕНА';
+ }catch(e){result.textContent=lines.join('\n')+'\nОШИБКА: '+e.message;}
+};
+</script></html>

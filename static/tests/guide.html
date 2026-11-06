@@ -1,0 +1,42 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Проверка справочника</title><style>body{font:16px system-ui;padding:24px;background:#f4f3ed;color:#243c35}button{padding:12px}pre{white-space:pre-wrap}iframe{width:100%;height:600px;border:0}</style><h1>Проверка справочника</h1><p>Проверка полноты карточек и паузы через функции игры. Клики проверяются отдельно. Без изменения прогресса.</p><button id="run">Проверить справочник</button><pre id="result" role="status">Ожидание запуска</pre><iframe src="/" title="Игра"></iframe><script>
+const frame=document.querySelector('iframe'), result=document.querySelector('#result');
+document.querySelector('#run').onclick=async()=>{
+ const win=frame.contentWindow, E=code=>win.eval(code), doc=win.document, lines=[];
+ const check=(ok,text)=>{if(!ok)throw Error(text);lines.push('OK: '+text);result.textContent=lines.join('\n');};
+ const before=await (await fetch('/api/state')).text();
+ try{
+  check(E('F.length>0 && !$("bguide").disabled'),'Игра и справочник загружены');
+  E('showGuide(true)');
+  check(doc.querySelector('#fishing-view').hidden&&!doc.querySelector('#guide-view').hidden,'Открывается отдельная вкладка');
+  const cfg=await (await fetch('/api/config')).json();
+  check(doc.querySelectorAll('#guide-fish article').length===cfg.fish.length,'Карточка для каждого вида');
+  for(const f of cfg.fish){
+   const card=doc.getElementById('guide-fish-'+f.id);
+   check(card.textContent.includes(f.name)&&card.textContent.includes(f.price+' ₽')&&!!card.querySelector('[role=img]'),'Изображение, название и цена: '+f.name);
+   check(f.locs.every(code=>card.textContent.includes(cfg.locations.find(l=>l.code===code).name)),'Локации: '+f.name);
+   const expected=cfg.baits.filter(b=>f.baits[b.code]>0).map(b=>b.code).sort().join();
+   check([...card.querySelectorAll('[data-guide-id]')].map(b=>b.dataset.guideId).sort().join()===expected,'Точные приманки: '+f.name);
+  }
+  E('selectGuideSection("baits")');
+  check(doc.querySelectorAll('#guide-baits article').length===cfg.baits.length,'Карточка для каждой приманки');
+  for(const b of cfg.baits){
+   const card=doc.getElementById('guide-bait-'+b.code);
+   check(card.textContent.includes(b.name)&&card.textContent.includes(b.price+' ₽'),'Название и цена: '+b.name);
+   const expected=cfg.fish.filter(f=>f.baits[b.code]>0).map(f=>String(f.id)).sort().join();
+   check([...card.querySelectorAll('[data-guide-id]')].map(f=>f.dataset.guideId).sort().join()===expected,'Точный список рыб: '+b.name);
+  }
+  E('down()');check(E('S==="idle"'),'В справочнике заброс заблокирован');
+  const saved=E('({S,tm,fish,tt})');
+  try{
+   E('S="wait";tm=100;fish=F[0]');
+   const time=E('tt');await new Promise(r=>setTimeout(r,300));
+   check(E('tm===100 && tt==='+time),'Поклёвка и игровое время на паузе');
+   E('showGuide(false)');
+   await new Promise(r=>setTimeout(r,200));
+   check(E('tm<100')&&!doc.querySelector('#fishing-view').hidden,'Возвращение возобновляет игру');
+  }finally{win.__guideSaved=saved;E('S=__guideSaved.S;tm=__guideSaved.tm;fish=__guideSaved.fish;tt=__guideSaved.tt;label()');delete win.__guideSaved;}
+  check(await (await fetch('/api/state')).text()===before,'Деньги, наживка и улов не изменились');
+  result.textContent=lines.join('\n')+'\nПРОВЕРКА ПРОЙДЕНА';
+ }catch(e){result.textContent=lines.join('\n')+'\nОШИБКА: '+e.message;}
+};
+</script></html>

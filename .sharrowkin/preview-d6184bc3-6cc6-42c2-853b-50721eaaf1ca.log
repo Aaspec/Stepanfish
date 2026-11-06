@@ -1,0 +1,58 @@
+Preview: http://127.0.0.1:53815
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /marine.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /scenery.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /locations.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /guide.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /game.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /api/config HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /marine.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /scenery.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /locations.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /guide.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /game.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /api/config HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:25:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /marine.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /scenery.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /locations.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /guide.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:07] "GET /game.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:08] "GET /api/config HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:09] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:26:09] "GET /.env HTTP/1.1" 404 -
+127.0.0.1 - - [06/Nov/2026 10:26:09] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:26:09] "GET /.env.local HTTP/1.1" 404 -
+127.0.0.1 - - [06/Nov/2026 10:26:09] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:26:09] "GET /.env.production HTTP/1.1" 404 -
+127.0.0.1 - - [06/Nov/2026 10:26:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /marine.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /scenery.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /locations.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /guide.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /game.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /api/config HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /marine.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /scenery.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /locations.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /guide.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /game.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:58] "GET /api/config HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:26:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [06/Nov/2026 10:27:01] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:27:01] "GET /.env HTTP/1.1" 404 -
+127.0.0.1 - - [06/Nov/2026 10:27:01] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:27:01] "GET /.env.local HTTP/1.1" 404 -
+127.0.0.1 - - [06/Nov/2026 10:27:01] code 404, message File not found
+127.0.0.1 - - [06/Nov/2026 10:27:01] "GET /.env.production HTTP/1.1" 404 -

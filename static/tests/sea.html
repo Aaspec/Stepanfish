@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><title>Проверка морской рыбалки</title>
+<style>body{font:16px system-ui;background:#f4f3ed;color:#243c35;padding:24px}button{padding:12px}iframe{width:100%;height:600px;border:0}pre{white-space:pre-wrap}</style>
+<h1>Проверка морской рыбалки</h1><p>Только для изолированного preview_sea.py после тестовой покупки лодки. Выполняет один заброс, забирает рыбу и проверяет серверное сохранение.</p>
+<button id="run">Проверить морской цикл</button><pre id="result" role="status">Ожидание запуска</pre><iframe src="/" title="Игра"></iframe>
+<script>
+const frame=document.querySelector('iframe'), result=document.querySelector('#result');
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+document.querySelector('#run').onclick=async()=>{
+ const E=source=>frame.contentWindow.eval(source), lines=[];
+ const check=(ok,text)=>{if(!ok)throw Error(text);lines.push('OK: '+text);result.textContent=lines.join('\n');};
+ const step=n=>E(`for(let i=0;i<${n};i++)update(1/60)`);
+ try{
+  check(E('S==="idle" && boatOwned'),'Покупка лодки сохранена после перезагрузки страницы');
+  const before=await (await fetch('/api/state')).json();
+  E('sl.value="sea";sb.value="shrimp";sr.value=2;updateLocationInfo();draw()');
+  check(E('landscapeKey==="sea"'),'Морская сцена отрисована');
+  check(E('F.filter(f=>f.locs.includes("sea")).length===4'),'Четыре исключительно морских вида доступны в игре');
+  E('down()');step(40);check(E('S==="charge"&&pw>0'),'Удержание заряжает заброс');
+  E('up()');
+  for(let i=0;i<100&&E('castPending');i++)await sleep(50);
+  check(!E('castPending'),'Сервер подтвердил заброс');step(50);
+  check(E('S==="wait"&&fish&&fish.locs.includes("sea")'),'После заброса выбрана морская рыба');
+  while(E('S==="wait"'))step(1);
+  check(E('S==="bite"'),'Поклёвка');E('down()');
+  check(E('S==="reel"'),'Подсечка запускает вываживание');
+  for(let i=0;i<20000&&E('S==="reel"');i++){E('hold=t<.48?1:0');step(1);}
+  check(E('S==="res"'),'Натяжение и подмотка приводят к карточке улова');
+  const price=E('fish.price');
+  // Клиентское ускорение не обходит серверный минимальный интервал.
+  result.textContent=lines.join('\n')+'\nОжидание серверного интервала: нажмите «Сохранить улов» через 12 секунд.';
+  const save=document.createElement('button');save.textContent='Сохранить улов';document.querySelector('#run').after(save);
+  await new Promise(resolve=>save.onclick=()=>{save.remove();resolve();});
+  await E('finish(true)');step(60);
+  const after=await (await fetch('/api/state')).json();
+  check(after.money===before.money+price,'Сервер начислил стоимость морской рыбы');
+  check(after.baits.shrimp===before.baits.shrimp-1,'Потрачена ровно одна креветка');
+  check(after.last[0].location==='Морская рыбалка','Улов сохранён с морской локацией');
+  check(E('S==="idle"&&!sl.disabled'),'Управление готово к следующему забросу');
+  E('showGuide(true)');
+  check(E('document.querySelectorAll("#guide-fish .guide-card").length===12'),'Справочник содержит все двенадцать рыб');
+  check(E('document.querySelector("#guide-bait-shrimp").textContent.includes("80")'),'Креветка и её цена присутствуют в справочнике');
+  E('showGuide(false)');
+  result.textContent=lines.join('\n')+'\nПРОВЕРКА ПРОЙДЕНА';
+ }catch(error){result.textContent=lines.join('\n')+'\nОШИБКА: '+error.message;}
+};
+</script></html>
